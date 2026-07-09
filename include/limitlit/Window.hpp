@@ -17,15 +17,9 @@ public:
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
 
-    bool Create(
-        const char* title,
-        int width,
-        int height);
-
+    bool Create(const char* title, int width, int height);
     bool PollEvents();
-
-    void Present(
-        const Framebuffer& framebuffer);
+    void Present(const Framebuffer& framebuffer);
 
     int Width() const;
     int Height() const;

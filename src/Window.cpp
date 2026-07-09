@@ -20,10 +20,7 @@ Window::~Window()
     Destroy();
 }
 
-bool Window::Create(
-    const char* title,
-    int width,
-    int height)
+bool Window::Create(const char* title, int width, int height)
 {
     m_width = width;
     m_height = height;
@@ -82,20 +79,16 @@ bool Window::PollEvents()
             return false;
         }
 
-        if (event.type == SDL_KEYDOWN)
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
         {
-            if (event.key.keysym.sym == SDLK_ESCAPE)
-            {
-                return false;
-            }
+            return false;
         }
     }
 
     return true;
 }
 
-void Window::Present(
-    const Framebuffer& framebuffer)
+void Window::Present(const Framebuffer& framebuffer)
 {
     SDL_UpdateTexture(
         m_texture,

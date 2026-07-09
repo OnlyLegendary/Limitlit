@@ -8,13 +8,16 @@ namespace LimitLit
 class Renderer
 {
 public:
-    Renderer(
-        int width,
-        int height);
+    Renderer(int width, int height);
 
     void Render();
 
     const Framebuffer& GetFramebuffer() const;
+
+private:
+    void DrawEditorShell();
+    void DrawBeveledPanel(int x, int y, int width, int height);
+    void DrawButton(int x, int y, int width, int height);
 
 private:
     Framebuffer m_framebuffer;

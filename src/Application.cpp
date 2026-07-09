@@ -21,7 +21,7 @@ int Application::Run()
 
     Window window;
 
-    if (!window.Create("LimitLit v0.1.0", windowWidth, windowHeight))
+    if (!window.Create("LimitLit v0.2.0", windowWidth, windowHeight))
     {
         SDL_Quit();
         return 1;
@@ -36,7 +36,6 @@ int Application::Run()
         running = window.PollEvents();
 
         renderer.Render();
-
         window.Present(renderer.GetFramebuffer());
 
         SDL_Delay(16);
