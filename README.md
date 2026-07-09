@@ -2,17 +2,18 @@
 
 A deliberately limited software renderer inspired by 1990s creative rendering tools.
 
-## v0.6.0
+## v0.7.0
 
-First actual ray tracing milestone:
+This release improves the first CPU ray-traced render:
 
-- Vec3 math
-- Ray type
-- CPU ray tracer
-- Ray/sphere intersection
-- Simple diffuse lighting
-- Ray-traced sphere rendered into the studio viewport
-- UI still drawn into the same framebuffer
+- Ray-traced sphere
+- Ground plane ray intersection
+- Contact shadow
+- Cast shadow
+- Sky/ground ambient lighting
+- Ground bounce tint on sphere
+- Mild distance haze
+- The ray tracer now owns the full viewport image
 
 ## Build
 

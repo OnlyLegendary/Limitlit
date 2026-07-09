@@ -26,10 +26,9 @@ void ClassicUI::Draw(Framebuffer& framebuffer, const MouseState& mouse)
     DrawSidePanels(framebuffer, mouse);
     DrawViewport(framebuffer);
 
-    const char* status = "STATUS: RAY TRACER READY";
+    const char* status = "STATUS: SHADOWED RAY VIEW";
     if (mouse.x < 190) status = "STATUS: OBJECT TOOLS";
     else if (mouse.x > framebuffer.Width() - 258) status = "STATUS: PROPERTIES";
-    else status = "STATUS: CPU RAY TRACED VIEW";
 
     DrawStatusBar(framebuffer, status);
 }
@@ -45,7 +44,7 @@ void ClassicUI::DrawMenuBar(Framebuffer& framebuffer)
     framebuffer.DrawString(178, 9, "Camera", TextDark.Pack());
     framebuffer.DrawString(250, 9, "Render", TextDark.Pack());
     framebuffer.DrawString(324, 9, "Help", TextDark.Pack());
-    framebuffer.DrawString(width - 154, 9, "LimitLit 0.6", TextDark.Pack());
+    framebuffer.DrawString(width - 154, 9, "LimitLit 0.7", TextDark.Pack());
 }
 
 void ClassicUI::DrawStatusBar(Framebuffer& framebuffer, const char* status)
@@ -55,7 +54,7 @@ void ClassicUI::DrawStatusBar(Framebuffer& framebuffer, const char* status)
     framebuffer.FillRectangle(0, height - 28, width, 28, Status.Pack());
     framebuffer.DrawLine(0, height - 28, width - 1, height - 28, PanelLight.Pack());
     framebuffer.DrawString(12, height - 19, status, TextDark.Pack());
-    framebuffer.DrawString(width - 258, height - 19, "First sphere active", TextDark.Pack());
+    framebuffer.DrawString(width - 258, height - 19, "Contact shadow active", TextDark.Pack());
 }
 
 void ClassicUI::DrawSidePanels(Framebuffer& framebuffer, const MouseState& mouse)
@@ -84,7 +83,8 @@ void ClassicUI::DrawSidePanels(Framebuffer& framebuffer, const MouseState& mouse
     framebuffer.DrawString(width - 238, 52, "Properties", Text.Pack());
     DrawButton(framebuffer, width - 238, 76, 216, 28, "Object: Sphere", false, false);
     DrawButton(framebuffer, width - 238, 110, 216, 28, "Material: Ice", false, false);
-    DrawButton(framebuffer, width - 238, 144, 216, 28, "Renderer: CPU", false, false);
+    DrawButton(framebuffer, width - 238, 144, 216, 28, "Shadows: On", false, false);
+    DrawButton(framebuffer, width - 238, 178, 216, 28, "Haze: Soft", false, false);
 }
 
 void ClassicUI::DrawViewport(Framebuffer& framebuffer)
@@ -98,54 +98,17 @@ void ClassicUI::DrawViewport(Framebuffer& framebuffer)
 
     DrawBeveledPanel(framebuffer, x, y, w, h);
     framebuffer.DrawString(x + 16, y + 10, "Ray View", Text.Pack());
-    DrawWorldFrame(framebuffer, x + 10, y + 30, w - 20, h - 40);
-}
 
-void ClassicUI::DrawWorldFrame(Framebuffer& framebuffer, int x, int y, int width, int height)
-{
-    const int horizon = y + (height * 52) / 100;
-    for (int row = 0; row < height; ++row)
-    {
-        const int screenY = y + row;
-        if (screenY < horizon)
-        {
-            const int t = (row * 255) / (horizon - y + 1);
-            const unsigned char r = static_cast<unsigned char>(38 + (t * 30) / 255);
-            const unsigned char g = static_cast<unsigned char>(64 + (t * 55) / 255);
-            const unsigned char b = static_cast<unsigned char>(104 + (t * 82) / 255);
-            framebuffer.DrawLine(x, screenY, x + width - 1, screenY, Color(r,g,b).Pack());
-        }
-        else
-        {
-            const int groundRow = screenY - horizon;
-            const int t = (groundRow * 255) / (y + height - horizon + 1);
-            const unsigned char r = static_cast<unsigned char>(82 - (t * 26) / 255);
-            const unsigned char g = static_cast<unsigned char>(76 - (t * 22) / 255);
-            const unsigned char b = static_cast<unsigned char>(58 - (t * 18) / 255);
-            framebuffer.DrawLine(x, screenY, x + width - 1, screenY, Color(r,g,b).Pack());
-        }
-    }
-
-    framebuffer.DrawRectangle(x, y, width, height, PanelDark.Pack());
-    framebuffer.FillCircle(x + width - 118, y + 80, 22, Color(240,220,132).Pack());
-    framebuffer.FillCircle(x + width - 110, y + 73, 10, Color(255,242,168).Pack());
-    framebuffer.DrawLine(x, horizon, x + width - 1, horizon, Color(190,180,142).Pack());
-
-    const int centerX = x + width / 2;
-    const int bottomY = y + height - 1;
-    for (int i = -10; i <= 10; ++i)
-        framebuffer.DrawLine(centerX + i * 28, bottomY, centerX + i * 4, horizon, Color(94,88,70).Pack());
-
-    for (int i = 1; i <= 13; ++i)
-    {
-        const int yy = horizon + (i * i * 3);
-        if (yy < bottomY) framebuffer.DrawLine(x, yy, x + width - 1, yy, Color(94,88,70).Pack());
-    }
+    const int vx = x + 10;
+    const int vy = y + 30;
+    const int vw = w - 20;
+    const int vh = h - 40;
 
     RayTracer tracer;
-    tracer.RenderSphere(framebuffer, x + width / 2 - 145, y + height / 2 - 165, 290, 290);
+    tracer.RenderScene(framebuffer, vx, vy, vw, vh);
 
-    framebuffer.DrawString(x + 20, y + 22, "CPU RAY TRACED SPHERE", Color(235,238,242).Pack());
+    framebuffer.DrawRectangle(vx, vy, vw, vh, PanelDark.Pack());
+    framebuffer.DrawString(vx + 20, vy + 22, "CPU RAY TRACE  CONTACT SHADOW", Color(235,238,242).Pack());
 }
 
 void ClassicUI::DrawBeveledPanel(Framebuffer& framebuffer, int x, int y, int width, int height)
