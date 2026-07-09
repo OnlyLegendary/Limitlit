@@ -2,23 +2,22 @@
 
 A deliberately limited software renderer inspired by 1990s creative rendering tools.
 
-## v0.7.0
+## v0.8.0
 
-This release improves the first CPU ray-traced render:
+UI polish release:
 
-- Ray-traced sphere
-- Ground plane ray intersection
-- Contact shadow
-- Cast shadow
-- Sky/ground ambient lighting
-- Ground bounce tint on sphere
-- Mild distance haze
-- The ray tracer now owns the full viewport image
+- Persistent selected Sphere tool
+- Hover and pressed button states
+- Stronger visual hierarchy
+- Warmer panels and blue-gray accents
+- Scene list section
+- Properties grouped into sections
+- More finished status bar
+- Existing CPU ray tracer retained
 
 ## Build
 
 ```bash
-sudo apt update
 sudo apt install cmake g++ pkg-config libsdl2-dev
 mkdir -p build
 cd build

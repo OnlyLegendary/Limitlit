@@ -13,8 +13,9 @@ private:
     void DrawStatusBar(Framebuffer& framebuffer, const char* status);
     void DrawSidePanels(Framebuffer& framebuffer, const MouseState& mouse);
     void DrawViewport(Framebuffer& framebuffer);
-    void DrawBeveledPanel(Framebuffer& framebuffer, int x, int y, int width, int height);
-    void DrawButton(Framebuffer& framebuffer, int x, int y, int width, int height, const char* label, bool hovered, bool pressed);
+    void DrawSectionTitle(Framebuffer& framebuffer, int x, int y, const char* title);
+    void DrawBeveledPanel(Framebuffer& framebuffer, int x, int y, int width, int height, bool active = false);
+    void DrawButton(Framebuffer& framebuffer, int x, int y, int width, int height, const char* label, bool hovered, bool pressed, bool selected = false);
     bool Contains(const Rect& rect, int x, int y) const;
 };
 }
