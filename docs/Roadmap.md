@@ -1,17 +1,11 @@
 # LimitLit Roadmap
 
-## v0.4.0 — Interaction
-- Mouse tracking
-- Button hover
-- Button press
-- Status feedback
-- Software cursor
-
-## v0.5.0 — World View
+## v0.5.0 — The World
 - Sky gradient
 - Horizon
-- Ground grid
-- Startup world
+- Ground plane
+- Perspective grid
+- Native cursor
 
 ## v0.6.0 — Math and Rays
 - Vec3

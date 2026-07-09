@@ -15,13 +15,9 @@ constexpr Color PanelLight(190, 190, 190);
 constexpr Color ButtonFace(132, 132, 132);
 constexpr Color ButtonHover(154, 154, 154);
 constexpr Color ButtonPressed(86, 86, 86);
-constexpr Color Viewport(28, 31, 34);
-constexpr Color ViewportGrid(42, 47, 52);
 constexpr Color Text(230, 230, 230);
 constexpr Color TextDark(18, 18, 18);
 constexpr Color Status(90, 90, 90);
-constexpr Color CursorWhite(245, 245, 245);
-constexpr Color CursorBlack(8, 8, 8);
 }
 
 void ClassicUI::Draw(Framebuffer& framebuffer, const MouseState& mouse)
@@ -44,11 +40,10 @@ void ClassicUI::Draw(Framebuffer& framebuffer, const MouseState& mouse)
     }
     else
     {
-        status = "STATUS: VIEWPORT";
+        status = "STATUS: STUDIO WORLD";
     }
 
     DrawStatusBar(framebuffer, status);
-    DrawSoftwareCursor(framebuffer, mouse);
 }
 
 void ClassicUI::DrawMenuBar(Framebuffer& framebuffer)
@@ -65,7 +60,7 @@ void ClassicUI::DrawMenuBar(Framebuffer& framebuffer)
     framebuffer.DrawString(250, 9, "Render", TextDark.Pack());
     framebuffer.DrawString(324, 9, "Help", TextDark.Pack());
 
-    framebuffer.DrawString(width - 154, 9, "LimitLit 0.4", TextDark.Pack());
+    framebuffer.DrawString(width - 154, 9, "LimitLit 0.5", TextDark.Pack());
 }
 
 void ClassicUI::DrawStatusBar(Framebuffer& framebuffer, const char* status)
@@ -77,7 +72,7 @@ void ClassicUI::DrawStatusBar(Framebuffer& framebuffer, const char* status)
     framebuffer.DrawLine(0, height - 28, width - 1, height - 28, PanelLight.Pack());
 
     framebuffer.DrawString(12, height - 19, status, TextDark.Pack());
-    framebuffer.DrawString(width - 258, height - 19, "Mouse UI active", TextDark.Pack());
+    framebuffer.DrawString(width - 258, height - 19, "World preview active", TextDark.Pack());
 }
 
 void ClassicUI::DrawSidePanels(Framebuffer& framebuffer, const MouseState& mouse)
@@ -127,43 +122,68 @@ void ClassicUI::DrawViewport(Framebuffer& framebuffer)
 
     DrawBeveledPanel(framebuffer, x, y, w, h);
 
-    framebuffer.FillRectangle(x + 10, y + 30, w - 20, h - 40, Viewport.Pack());
-    framebuffer.DrawRectangle(x + 10, y + 30, w - 20, h - 40, PanelDark.Pack());
+    framebuffer.DrawString(x + 16, y + 10, "Studio World", Text.Pack());
 
-    framebuffer.DrawString(x + 16, y + 10, "Studio", Text.Pack());
-
-    for (int gridX = x + 10; gridX < x + w - 10; gridX += 40)
-    {
-        framebuffer.DrawLine(gridX, y + 30, gridX, y + h - 11, ViewportGrid.Pack());
-    }
-
-    for (int gridY = y + 30; gridY < y + h - 10; gridY += 40)
-    {
-        framebuffer.DrawLine(x + 10, gridY, x + w - 11, gridY, ViewportGrid.Pack());
-    }
-
-    const int centerX = x + w / 2;
-    const int centerY = y + h / 2;
-
-    framebuffer.DrawLine(centerX, y + 30, centerX, y + h - 11, Color(72, 80, 88).Pack());
-    framebuffer.DrawLine(x + 10, centerY, x + w - 11, centerY, Color(72, 80, 88).Pack());
-
-    framebuffer.DrawString(centerX - 84, centerY - 28, "Welcome to LimitLit", Text.Pack(), 2);
-    framebuffer.DrawString(centerX - 88, centerY + 6, "Create > Sphere", Color(180, 190, 200).Pack());
-    framebuffer.DrawString(centerX - 88, centerY + 22, "Create > Terrain", Color(180, 190, 200).Pack());
+    DrawWorld(framebuffer, x + 10, y + 30, w - 20, h - 40);
 }
 
-void ClassicUI::DrawSoftwareCursor(Framebuffer& framebuffer, const MouseState& mouse)
+void ClassicUI::DrawWorld(Framebuffer& framebuffer, int x, int y, int width, int height)
 {
-    const int x = mouse.x;
-    const int y = mouse.y;
+    const int horizon = y + (height * 48) / 100;
 
-    framebuffer.DrawLine(x, y, x, y + 16, CursorWhite.Pack());
-    framebuffer.DrawLine(x, y, x + 10, y + 10, CursorWhite.Pack());
-    framebuffer.DrawLine(x, y + 16, x + 4, y + 12, CursorWhite.Pack());
-    framebuffer.DrawLine(x + 10, y + 10, x + 4, y + 12, CursorWhite.Pack());
+    for (int row = 0; row < height; ++row)
+    {
+        const int screenY = y + row;
 
-    framebuffer.SetPixel(x + 1, y + 1, CursorBlack.Pack());
+        if (screenY < horizon)
+        {
+            const int t = (row * 255) / (horizon - y + 1);
+            const unsigned char r = static_cast<unsigned char>(38 + (t * 30) / 255);
+            const unsigned char g = static_cast<unsigned char>(64 + (t * 55) / 255);
+            const unsigned char b = static_cast<unsigned char>(104 + (t * 82) / 255);
+
+            framebuffer.DrawLine(x, screenY, x + width - 1, screenY, Color(r, g, b).Pack());
+        }
+        else
+        {
+            const int groundRow = screenY - horizon;
+            const int t = (groundRow * 255) / (y + height - horizon + 1);
+            const unsigned char r = static_cast<unsigned char>(82 - (t * 26) / 255);
+            const unsigned char g = static_cast<unsigned char>(76 - (t * 22) / 255);
+            const unsigned char b = static_cast<unsigned char>(58 - (t * 18) / 255);
+
+            framebuffer.DrawLine(x, screenY, x + width - 1, screenY, Color(r, g, b).Pack());
+        }
+    }
+
+    framebuffer.DrawRectangle(x, y, width, height, PanelDark.Pack());
+
+    framebuffer.FillCircle(x + width - 118, y + 80, 22, Color(240, 220, 132).Pack());
+    framebuffer.FillCircle(x + width - 110, y + 73, 10, Color(255, 242, 168).Pack());
+
+    framebuffer.DrawLine(x, horizon, x + width - 1, horizon, Color(190, 180, 142).Pack());
+
+    const int centerX = x + width / 2;
+    const int bottomY = y + height - 1;
+
+    for (int i = -10; i <= 10; ++i)
+    {
+        const int startX = centerX + i * 28;
+        framebuffer.DrawLine(startX, bottomY, centerX + i * 4, horizon, Color(94, 88, 70).Pack());
+    }
+
+    for (int i = 1; i <= 13; ++i)
+    {
+        const int yy = horizon + (i * i * 3);
+        if (yy < bottomY)
+        {
+            framebuffer.DrawLine(x, yy, x + width - 1, yy, Color(94, 88, 70).Pack());
+        }
+    }
+
+    framebuffer.DrawString(x + 24, y + 24, "Welcome to LimitLit", Color(235, 238, 242).Pack(), 2);
+    framebuffer.DrawString(x + 28, y + 58, "Create > Terrain", Color(220, 224, 230).Pack());
+    framebuffer.DrawString(x + 28, y + 74, "Create > Sphere", Color(220, 224, 230).Pack());
 }
 
 void ClassicUI::DrawBeveledPanel(Framebuffer& framebuffer, int x, int y, int width, int height)
@@ -212,11 +232,7 @@ void ClassicUI::DrawButton(Framebuffer& framebuffer, int x, int y, int width, in
 
 bool ClassicUI::Contains(const Rect& rect, int x, int y) const
 {
-    return
-        x >= rect.x &&
-        y >= rect.y &&
-        x < rect.x + rect.width &&
-        y < rect.y + rect.height;
+    return x >= rect.x && y >= rect.y && x < rect.x + rect.width && y < rect.y + rect.height;
 }
 
 }

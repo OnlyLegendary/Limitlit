@@ -18,6 +18,7 @@ public:
     void DrawLine(int x0, int y0, int x1, int y1, uint32_t color);
     void DrawRectangle(int x, int y, int width, int height, uint32_t color);
     void FillRectangle(int x, int y, int width, int height, uint32_t color);
+    void FillCircle(int centerX, int centerY, int radius, uint32_t color);
 
     void DrawCharacter(int x, int y, char character, uint32_t color, int scale = 1);
     void DrawString(int x, int y, std::string_view text, uint32_t color, int scale = 1);

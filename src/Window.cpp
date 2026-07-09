@@ -35,7 +35,7 @@ bool Window::Create(const char* title, int width, int height)
         return false;
     }
 
-    SDL_ShowCursor(SDL_DISABLE);
+    SDL_ShowCursor(SDL_ENABLE);
 
     m_renderer = SDL_CreateRenderer(
         m_window,

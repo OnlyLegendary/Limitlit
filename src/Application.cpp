@@ -21,7 +21,7 @@ int Application::Run()
 
     Window window;
 
-    if (!window.Create("LimitLit v0.4.0", windowWidth, windowHeight))
+    if (!window.Create("LimitLit v0.5.0", windowWidth, windowHeight))
     {
         SDL_Quit();
         return 1;

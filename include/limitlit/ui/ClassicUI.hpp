@@ -26,8 +26,8 @@ private:
     void DrawStatusBar(Framebuffer& framebuffer, const char* status);
     void DrawSidePanels(Framebuffer& framebuffer, const MouseState& mouse);
     void DrawViewport(Framebuffer& framebuffer);
-    void DrawSoftwareCursor(Framebuffer& framebuffer, const MouseState& mouse);
 
+    void DrawWorld(Framebuffer& framebuffer, int x, int y, int width, int height);
     void DrawBeveledPanel(Framebuffer& framebuffer, int x, int y, int width, int height);
     void DrawButton(Framebuffer& framebuffer, int x, int y, int width, int height, const char* label, bool hovered, bool pressed);
 

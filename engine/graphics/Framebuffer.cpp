@@ -95,6 +95,27 @@ void Framebuffer::FillRectangle(int x, int y, int width, int height, uint32_t co
     }
 }
 
+void Framebuffer::FillCircle(int centerX, int centerY, int radius, uint32_t color)
+{
+    if (radius <= 0)
+    {
+        return;
+    }
+
+    const int radiusSquared = radius * radius;
+
+    for (int y = -radius; y <= radius; ++y)
+    {
+        for (int x = -radius; x <= radius; ++x)
+        {
+            if ((x * x) + (y * y) <= radiusSquared)
+            {
+                SetPixel(centerX + x, centerY + y, color);
+            }
+        }
+    }
+}
+
 void Framebuffer::DrawCharacter(int x, int y, char character, uint32_t color, int scale)
 {
     if (scale <= 0)

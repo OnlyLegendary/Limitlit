@@ -2,17 +2,18 @@
 
 **LimitLit** is a deliberately limited software renderer inspired by the creative spirit of 1990s rendering tools.
 
-## v0.4.0
+## v0.5.0
 
-This release adds early interaction and a more complete editor shell:
+This release adds the first "world" viewport:
 
-- Mouse state tracking
-- Hovered buttons
-- Pressed button effect
-- Status bar changes based on hover
-- Software-drawn cursor
-- Welcome message in the viewport
-- Classic 90s style UI drawn entirely into the framebuffer
+- Native OS mouse cursor restored
+- Software UI still drawn into the framebuffer
+- Sky gradient
+- Sun disk
+- Horizon
+- Ground plane
+- Perspective grid
+- Startup world feeling instead of an empty viewport
 
 ## Build
 
