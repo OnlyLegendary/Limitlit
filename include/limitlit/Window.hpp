@@ -1,7 +1,8 @@
 #pragma once
 
+#include "limitlit/input/MouseState.hpp"
+
 #include <SDL2/SDL.h>
-#include <cstdint>
 
 namespace LimitLit
 {
@@ -21,8 +22,7 @@ public:
     bool PollEvents();
     void Present(const Framebuffer& framebuffer);
 
-    int Width() const;
-    int Height() const;
+    const MouseState& GetMouseState() const;
 
 private:
     void Destroy();
@@ -32,8 +32,7 @@ private:
     SDL_Renderer* m_renderer;
     SDL_Texture* m_texture;
 
-    int m_width;
-    int m_height;
+    MouseState m_mouse;
 };
 
 }

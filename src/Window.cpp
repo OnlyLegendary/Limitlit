@@ -10,8 +10,7 @@ Window::Window()
     m_window(nullptr),
     m_renderer(nullptr),
     m_texture(nullptr),
-    m_width(0),
-    m_height(0)
+    m_mouse()
 {
 }
 
@@ -22,9 +21,6 @@ Window::~Window()
 
 bool Window::Create(const char* title, int width, int height)
 {
-    m_width = width;
-    m_height = height;
-
     m_window = SDL_CreateWindow(
         title,
         SDL_WINDOWPOS_CENTERED,
@@ -38,6 +34,8 @@ bool Window::Create(const char* title, int width, int height)
         SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
         return false;
     }
+
+    SDL_ShowCursor(SDL_DISABLE);
 
     m_renderer = SDL_CreateRenderer(
         m_window,
@@ -70,6 +68,8 @@ bool Window::Create(const char* title, int width, int height)
 
 bool Window::PollEvents()
 {
+    m_mouse.leftClicked = false;
+
     SDL_Event event;
 
     while (SDL_PollEvent(&event))
@@ -82,6 +82,27 @@ bool Window::PollEvents()
         if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
         {
             return false;
+        }
+
+        if (event.type == SDL_MOUSEMOTION)
+        {
+            m_mouse.x = event.motion.x;
+            m_mouse.y = event.motion.y;
+        }
+
+        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+        {
+            m_mouse.leftDown = true;
+            m_mouse.leftClicked = true;
+            m_mouse.x = event.button.x;
+            m_mouse.y = event.button.y;
+        }
+
+        if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
+        {
+            m_mouse.leftDown = false;
+            m_mouse.x = event.button.x;
+            m_mouse.y = event.button.y;
         }
     }
 
@@ -101,14 +122,9 @@ void Window::Present(const Framebuffer& framebuffer)
     SDL_RenderPresent(m_renderer);
 }
 
-int Window::Width() const
+const MouseState& Window::GetMouseState() const
 {
-    return m_width;
-}
-
-int Window::Height() const
-{
-    return m_height;
+    return m_mouse;
 }
 
 void Window::Destroy()
@@ -130,9 +146,6 @@ void Window::Destroy()
         SDL_DestroyWindow(m_window);
         m_window = nullptr;
     }
-
-    m_width = 0;
-    m_height = 0;
 }
 
 }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(LimitLit VERSION 0.3.0 LANGUAGES CXX)
+project(LimitLit VERSION 0.4.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,8 +14,11 @@ add_executable(LimitLit
     src/Application.cpp
     src/Window.cpp
     src/Renderer.cpp
+
     engine/graphics/Framebuffer.cpp
     engine/graphics/BitmapFont.cpp
+
+    ui/ClassicUI.cpp
 )
 
 target_include_directories(LimitLit PRIVATE

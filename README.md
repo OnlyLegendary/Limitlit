@@ -2,19 +2,19 @@
 
 **LimitLit** is a deliberately limited software renderer inspired by the creative spirit of 1990s rendering tools.
 
-## v0.3.0
+## v0.4.0
 
-This version adds the first real editor UI pieces:
+This release adds early interaction and a more complete editor shell:
 
-- Bitmap font rendering
-- DrawCharacter
-- DrawString
-- Menu bar text
-- Sidebar labels
-- Status bar text
-- Classic gray editor layout
+- Mouse state tracking
+- Hovered buttons
+- Pressed button effect
+- Status bar changes based on hover
+- Software-drawn cursor
+- Welcome message in the viewport
+- Classic 90s style UI drawn entirely into the framebuffer
 
-## Build on Ubuntu
+## Build
 
 ```bash
 sudo apt update
@@ -26,6 +26,4 @@ make
 ./LimitLit
 ```
 
-## Philosophy
-
-Boundaries create creativity.
+Press `Esc` to close.

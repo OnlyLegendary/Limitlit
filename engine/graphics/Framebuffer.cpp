@@ -1,5 +1,7 @@
 #include "limitlit/graphics/Framebuffer.hpp"
 
+#include "limitlit/graphics/BitmapFont.hpp"
+
 #include <algorithm>
 #include <cstdlib>
 
@@ -21,18 +23,12 @@ void Framebuffer::Clear(uint32_t color)
 
 void Framebuffer::SetPixel(int x, int y, uint32_t color)
 {
-    if (x < 0 || y < 0)
+    if (x < 0 || y < 0 || x >= m_width || y >= m_height)
     {
         return;
     }
 
-    if (x >= m_width || y >= m_height)
-    {
-        return;
-    }
-
-    const int index = y * m_width + x;
-    m_pixels[static_cast<std::size_t>(index)] = color;
+    m_pixels[static_cast<std::size_t>(y * m_width + x)] = color;
 }
 
 void Framebuffer::DrawLine(int x0, int y0, int x1, int y1, uint32_t color)
@@ -96,6 +92,44 @@ void Framebuffer::FillRectangle(int x, int y, int width, int height, uint32_t co
         {
             SetPixel(column, row, color);
         }
+    }
+}
+
+void Framebuffer::DrawCharacter(int x, int y, char character, uint32_t color, int scale)
+{
+    if (scale <= 0)
+    {
+        return;
+    }
+
+    const auto glyph = BitmapFont::Glyph(character);
+
+    for (int row = 0; row < 7; ++row)
+    {
+        const uint8_t bits = glyph[static_cast<std::size_t>(row)];
+
+        for (int column = 0; column < 5; ++column)
+        {
+            const bool filled = (bits & (1u << (4 - column))) != 0;
+
+            if (!filled)
+            {
+                continue;
+            }
+
+            FillRectangle(x + column * scale, y + row * scale, scale, scale, color);
+        }
+    }
+}
+
+void Framebuffer::DrawString(int x, int y, std::string_view text, uint32_t color, int scale)
+{
+    int cursorX = x;
+
+    for (char character : text)
+    {
+        DrawCharacter(cursorX, y, character, color, scale);
+        cursorX += 6 * scale;
     }
 }
 

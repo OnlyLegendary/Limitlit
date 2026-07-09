@@ -21,7 +21,7 @@ int Application::Run()
 
     Window window;
 
-    if (!window.Create("LimitLit v0.3.0", windowWidth, windowHeight))
+    if (!window.Create("LimitLit v0.4.0", windowWidth, windowHeight))
     {
         SDL_Quit();
         return 1;
@@ -35,14 +35,13 @@ int Application::Run()
     {
         running = window.PollEvents();
 
-        renderer.Render();
+        renderer.Render(window.GetMouseState());
         window.Present(renderer.GetFramebuffer());
 
         SDL_Delay(16);
     }
 
     SDL_Quit();
-
     return 0;
 }
 
