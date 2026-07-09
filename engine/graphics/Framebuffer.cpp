@@ -1,4 +1,4 @@
-#include "Framebuffer.hpp"
+#include "limitlit/graphics/Framebuffer.hpp"
 
 #include <algorithm>
 
@@ -11,11 +11,12 @@ Framebuffer::Framebuffer(
     :
     m_width(width),
     m_height(height),
-    m_pixels(width * height)
+    m_pixels(static_cast<std::size_t>(width * height))
 {
 }
 
-void Framebuffer::Clear(uint32_t color)
+void Framebuffer::Clear(
+    uint32_t color)
 {
     std::fill(
         m_pixels.begin(),
@@ -29,12 +30,17 @@ void Framebuffer::SetPixel(
     uint32_t color)
 {
     if (x < 0 || y < 0)
+    {
         return;
+    }
 
     if (x >= m_width || y >= m_height)
+    {
         return;
+    }
 
-    m_pixels[y * m_width + x] = color;
+    const int index = y * m_width + x;
+    m_pixels[static_cast<std::size_t>(index)] = color;
 }
 
 const uint32_t* Framebuffer::Data() const

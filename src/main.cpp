@@ -2,6 +2,6 @@
 
 int main()
 {
-    Application app;
+    LimitLit::Application app;
     return app.Run();
 }

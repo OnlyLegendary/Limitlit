@@ -34,4 +34,5 @@ struct Color
             static_cast<uint32_t>(b);
     }
 };
+
 }

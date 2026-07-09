@@ -1,17 +1,23 @@
 #pragma once
 
+#include "limitlit/graphics/Framebuffer.hpp"
+
 namespace LimitLit
 {
-
-class Window;
 
 class Renderer
 {
 public:
+    Renderer(
+        int width,
+        int height);
 
-    Renderer();
+    void Render();
 
-    void Draw(Window& window);
+    const Framebuffer& GetFramebuffer() const;
+
+private:
+    Framebuffer m_framebuffer;
 };
 
 }
