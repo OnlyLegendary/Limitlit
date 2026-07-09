@@ -10,12 +10,22 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 
 add_executable(LimitLit
+
     src/main.cpp
+
     src/Application.cpp
+    src/Window.cpp
+    src/Renderer.cpp
+
+    engine/graphics/Framebuffer.cpp
 )
 
 target_include_directories(LimitLit PRIVATE
+
     include
+
+    engine
+
     ${SDL2_INCLUDE_DIRS}
 )
 
@@ -28,6 +38,7 @@ target_link_libraries(LimitLit PRIVATE
 )
 
 target_compile_options(LimitLit PRIVATE
+
     -Wall
     -Wextra
     -Wpedantic
