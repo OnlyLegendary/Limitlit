@@ -2,17 +2,17 @@
 
 **LimitLit** is a deliberately limited software renderer inspired by the creative spirit of 1990s rendering tools.
 
-## v0.2.0
+## v0.3.0
 
-This version adds the first real 2D drawing tools:
+This version adds the first real editor UI pieces:
 
-- Software framebuffer
-- Pixel drawing
-- Lines
-- Rectangles
-- Filled rectangles
-- Simple startup/editor screen drawn by LimitLit
-- SDL2 only used for the window and presenting pixels
+- Bitmap font rendering
+- DrawCharacter
+- DrawString
+- Menu bar text
+- Sidebar labels
+- Status bar text
+- Classic gray editor layout
 
 ## Build on Ubuntu
 

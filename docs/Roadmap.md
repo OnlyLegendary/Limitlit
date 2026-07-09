@@ -14,10 +14,10 @@
 - Basic editor screen
 
 ## v0.3.0 — Bitmap Text
-- 8x8 font
-- Labels
-- Menu text
-- Status text
+- Bitmap font
+- DrawCharacter
+- DrawString
+- Editor labels
 
 ## v0.4.0 — Math Foundation
 - Vec2
