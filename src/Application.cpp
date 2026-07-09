@@ -1,13 +1,9 @@
 #include "limitlit/Application.hpp"
-
 #include "limitlit/Renderer.hpp"
 #include "limitlit/Window.hpp"
-
 #include <SDL2/SDL.h>
-
 namespace LimitLit
 {
-
 int Application::Run()
 {
     constexpr int windowWidth = 1280;
@@ -20,8 +16,7 @@ int Application::Run()
     }
 
     Window window;
-
-    if (!window.Create("LimitLit v0.5.0", windowWidth, windowHeight))
+    if (!window.Create("LimitLit v0.6.0", windowWidth, windowHeight))
     {
         SDL_Quit();
         return 1;
@@ -30,19 +25,15 @@ int Application::Run()
     Renderer renderer(windowWidth, windowHeight);
 
     bool running = true;
-
     while (running)
     {
         running = window.PollEvents();
-
         renderer.Render(window.GetMouseState());
         window.Present(renderer.GetFramebuffer());
-
         SDL_Delay(16);
     }
 
     SDL_Quit();
     return 0;
 }
-
 }

@@ -1,19 +1,18 @@
 # LimitLit
 
-**LimitLit** is a deliberately limited software renderer inspired by the creative spirit of 1990s rendering tools.
+A deliberately limited software renderer inspired by 1990s creative rendering tools.
 
-## v0.5.0
+## v0.6.0
 
-This release adds the first "world" viewport:
+First actual ray tracing milestone:
 
-- Native OS mouse cursor restored
-- Software UI still drawn into the framebuffer
-- Sky gradient
-- Sun disk
-- Horizon
-- Ground plane
-- Perspective grid
-- Startup world feeling instead of an empty viewport
+- Vec3 math
+- Ray type
+- CPU ray tracer
+- Ray/sphere intersection
+- Simple diffuse lighting
+- Ray-traced sphere rendered into the studio viewport
+- UI still drawn into the same framebuffer
 
 ## Build
 
@@ -26,5 +25,3 @@ cmake ..
 make
 ./LimitLit
 ```
-
-Press `Esc` to close.
